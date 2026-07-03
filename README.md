@@ -66,8 +66,7 @@ If you find our repository useful, please consider giving it a star ⭐ and citi
     title={Video-Based Optimal Transport for Feedback-Efficient Offline Preference-Based Reinforcement Learning},
     author={Tung M. Luu and Hwanhee Kim and Younghwan Lee and Chang D. Yoo},
     booktitle={Forty-third International Conference on Machine Learning},
-    year={2026},
-    url={https://openreview.net/forum?id=G8LVO5easu}
+    year={2026}
 }
 ```
 
