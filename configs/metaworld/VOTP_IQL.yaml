@@ -1,0 +1,96 @@
+alg: PIQL
+alg_kwargs:
+  expectile: 0.9
+  beta: 0.1
+  clip_score: 100.0
+  reward_steps: 10000
+  reward_loss_type: ce
+
+optim: Adam
+optim_kwargs:
+  lr: 0.0003
+
+network: ActorCriticValueRewardSpecialPolicy
+network_kwargs:
+  actor_class: ContinuousMLPActor
+  actor_kwargs:
+    output_act: ["import", "torch.nn", "Tanh"]
+  critic_class: ContinuousMLPCritic
+  critic_kwargs:
+    ensemble_size: 2
+  value_class: MLPValue
+  value_kwargs:
+    ensemble_size: 1
+  reward_class: ContinuousMLPCritic # DrQv2RewardNoAction, DrQv2Reward, ContinuousMLPCritic
+  reward_kwargs:
+    ensemble_size: 1
+    output_act: ["import", "torch.nn", "Tanh"]
+    act: ["import", "torch.nn", "LeakyReLU"]
+    hidden_layers: [128, 128]
+  hidden_layers: [256, 256]
+  ortho_init: True
+  image_size: 64
+
+eval_env: mw_door-open-v2
+eval_env_kwargs: {}
+
+dataset: ReplayAndFeedbackBuffer
+dataset_kwargs:
+  # Config for offline dataset
+  replay_class: MW_OfflineDataset
+  replay_kwargs:
+    path: null
+    sample_fn: sample_qlearning
+    sample_kwargs:
+      discount: 0.99
+      nstep: 1
+      batch_size: 512
+      sample_by_timesteps: False
+    capacity: null
+    distributed: False
+    action_eps: 0.00001   # necessary to prevent NaN in the dataset.
+    steps_after_success: 3
+
+  # Config for offline feedback dataset
+  feedback_class: MW_FeedbackDataset
+  feedback_kwargs:
+    path: null
+    discount: 0.99
+    batch_size: 32
+    subsample_size: 42
+
+    equal_pref_threshold_teacher: 0.0
+    use_pseudo_label: False
+    preference_threshold: 0  # Threshold to judge preferred segment based on its preference score
+    n_queries: 50000
+    env_name: null
+    entropic_reg: 0.01
+    n_labels: 10
+    max_pairs: 50000
+    seed: -1
+
+schedule:
+  reward: ["import", "torch.optim.lr_scheduler", "StepLR"]
+schedule_kwargs:
+  reward:
+    step_size: 2000
+    gamma: 0.9
+
+processor: null
+
+trainer_kwargs: # Arguments given to Algorithm.train
+  total_steps: 400000 # The total number of steps to train
+  log_freq: 500 # How often to log values
+  eval_freq: 10000 # How often to run evals
+  eval_fn: eval_policy
+  eval_kwargs:
+    num_ep: 25 # Number of enviornment episodes to run for evaluation
+    terminate_on_success: True  # since EvalMetricTracker takes max along episode, set this to save time for evaluation
+  loss_metric: success # The validation metric that determines when to save the "best_checkpoint"
+  train_dataloader_kwargs:
+    num_workers: 0
+    batch_size: null
+    collate_fn: null
+  profile_freq: 500
+
+seed: null
