@@ -16,7 +16,6 @@ KAIST, South Korea
         <a href="https://arxiv.org/abs/2606.16856v1" target='_blank'>
         <img src="https://img.shields.io/badge/arXiv-2606.16856-b31b1b.svg">
         </a>
-        <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/tunglm2203/votp">
 </p>
 
 
