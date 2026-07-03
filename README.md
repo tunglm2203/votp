@@ -22,9 +22,9 @@ KAIST, South Korea
 ## Overview
 This is the official implementation of **Video-based Optimal Transport Preference (VOTP)**.
 
-TL;DR: VOTP is a feedback-efficient offline PbRL method. It treats trajectory segments as distributions of video foundation model features and uses optimal transport to propagate a handful of preference labels across the whole dataset, yielding pseudo-labels that train a Bradley–Terry reward for offline RL. With only ~10 labels it matches or exceeds methods using far more feedback.
+**TL;DR**: VOTP is a feedback-efficient offline PbRL method. It treats trajectory segments as distributions of video foundation model features and uses optimal transport to propagate a handful of preference labels across the whole dataset, yielding pseudo-labels that train a Bradley–Terry reward for offline RL. With only ~10 labels it matches or exceeds methods using far more feedback.
 
-<p align="center" width="100%">
+<p align="center" width="75%">
     <img src="https://github.com/tunglm2203/votp/blob/main/assets/votp-overview.png"> 
 </p>
 
