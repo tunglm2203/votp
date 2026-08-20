@@ -36,7 +36,7 @@ if __name__ == "__main__":
     parser.add_argument("--env_name", type=str, default=None)
     parser.add_argument("--seed", type=int, default=1)
 
-    parser.add_argument("--logdir", type=str, default="logs_reproduce")
+    parser.add_argument("--logdir", type=str, default="logs")
     parser.add_argument("--exp_name", type=str, default="debug")
 
     parser.add_argument("--pbrl", type=str2bool, default=True)

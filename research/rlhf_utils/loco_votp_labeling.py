@@ -31,6 +31,7 @@ def loco_votp_labeling(
     # Define relative paths
     pseudo_preference_path = "datasets/locomotion/pseudo_preferences"
     os.makedirs(pseudo_preference_path, exist_ok=True)
+    pair_indices_path = f"datasets/locomotion/pseudo_preferences/pair_indices/{env_name}_pair_indices_{max_pairs}_{teacher}.npz"
     segment_data_file = f"datasets/locomotion/segments/data/{env_name}/num10000_{teacher}.npz"
     segment_feat_file = f"datasets/locomotion/segments/features/{env_name}_feat_{vifm}.npz"
     assert os.path.exists(segment_data_file) and os.path.exists(segment_feat_file), f"Missing files: {segment_data_file}, {segment_feat_file}"
@@ -42,9 +43,10 @@ def loco_votp_labeling(
     segment_data = np.load(segment_data_file, allow_pickle=True)
     segment_feat = np.load(segment_feat_file, allow_pickle=True)["feature"]
 
-    # Generate indices for segment pairs
-    pool_seg_1_idxes = np.arange(0, max_pairs)
-    pool_seg_2_idxes = np.arange(max_pairs, max_pairs * 2)
+    # Load pair indices
+    assert os.path.exists(pair_indices_path), f"File is not exist: {pair_indices_path}"
+    _tmp = np.load(pair_indices_path, allow_pickle=True)
+    pool_seg_1_idxes, pool_seg_2_idxes = _tmp["pool_seg_1_idxes"], _tmp["pool_seg_2_idxes"]
 
     # Prepare ground-truth preference
     gt_preferences = np.full(max_pairs, np.nan, dtype=np.float64)
@@ -126,7 +128,7 @@ def loco_votp_labeling(
     pair_indices = np.array(pair_indices)
     norm_preference_scores = np.array(norm_preference_scores)
     # Original segment indices for each pair, might be helful for reward relabeling
-    comparison_original_indices = np.stack([segment_data["original_indices_1"][:max_pairs], segment_data["original_indices_2"][:max_pairs]], axis=1)
+    comparison_original_indices = np.stack([segment_data["original_indices_1"][pool_seg_1_idxes], segment_data["original_indices_2"][pool_seg_2_idxes - N_SEG_PER_SIDE]], axis=1)
 
     if save_pseudo_preference:
         filename = os.path.join(

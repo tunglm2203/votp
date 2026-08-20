@@ -35,6 +35,11 @@ GDRIVE_MW_SEGMENTS_FEATURES="https://drive.google.com/file/d/1rzaJ6DZ42GW4ybOlSN
 GDRIVE_MW_SEGMENTS_VIDEO="https://drive.google.com/file/d/1BZmqjq4ChISyLBcFQUI6mlTiYI_rIyyi/view?usp=drive_link"
 GDRIVE_MW_OFFLINE="https://drive.google.com/file/d/1wBWjhVvAAMIND5wNNH8zxqk0lJWCp5LN/view?usp=drive_link"
 GDRIVE_MW_PAIR_INDICES="https://drive.google.com/file/d/1FunYPA0S8XmIm2UVdLqfwZEv5-VZjE8v/view?usp=sharing"
+
+GDRIVE_LOCO_SEGMENTS_DATA="https://drive.google.com/file/d/1SUTxt9eTfncA12Ck3vsPNPwH2BWr-yU7/view?usp=drive_link"
+GDRIVE_LOCO_SEGMENTS_FEATURES="https://drive.google.com/file/d/18B8DagC5s4CspSW524fMIL0Kls4DhowM/view?usp=drive_link"
+GDRIVE_LOCO_SEGMENTS_VIDEO="https://drive.google.com/file/d/1mcK67J6pDMqjeSmfVBJF5lU4QTYaj82m/view?usp=drive_link"
+GDRIVE_LOCO_PAIR_INDICES="https://drive.google.com/file/d/1Mq77kAu5IDBOq0w4sAPbJPiX6YHP9ppu/view?usp=sharing"
 # --------------------------------------------------------------------------
 
 mkdir -p downloads
@@ -89,10 +94,14 @@ download_and_extract "mw_segments_data"       "$GDRIVE_MW_SEGMENTS_DATA"       "
 download_and_extract "mw_segments_features"   "$GDRIVE_MW_SEGMENTS_FEATURES"   "datasets/metaworld/segments/features"
 download_and_extract "mw_offline_dataset"     "$GDRIVE_MW_OFFLINE"             "datasets/metaworld/offline_dataset"
 download_and_extract "mw_pair_indices"        "$GDRIVE_MW_PAIR_INDICES"        "datasets/metaworld/pseudo_preferences/pair_indices"
+download_and_extract "loco_segments_data"     "$GDRIVE_LOCO_SEGMENTS_DATA"     "datasets/locomotion/segments/data"
+download_and_extract "loco_segments_features" "$GDRIVE_LOCO_SEGMENTS_FEATURES" "datasets/locomotion/segments/features"
+download_and_extract "loco_pair_indices"      "$GDRIVE_LOCO_PAIR_INDICES"      "datasets/locomotion/pseudo_preferences/pair_indices"
 
 # Optional: source videos (only needed to regenerate features from scratch)
 if [ "$WITH_VIDEOS" = "1" ]; then
   download_and_extract "mw_segments_video"   "$GDRIVE_MW_SEGMENTS_VIDEO"   "datasets/metaworld/segments/video"
+  download_and_extract "loco_segments_video" "$GDRIVE_LOCO_SEGMENTS_VIDEO" "datasets/locomotion/segments/video"
 else
   echo
   echo "[info] Skipped video archives (~10G). Re-run with --with-videos to fetch them."
